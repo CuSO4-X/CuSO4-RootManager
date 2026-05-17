@@ -1,4 +1,4 @@
-# Code Verification Report / 代码验证报告
+# Code Verification Report
 
 > This document proves that **CuSO4 Open** (opensource version) and **CuSO4 Dev** (full version) are **identical except for user accounts and module market features**.
 
@@ -8,9 +8,9 @@
 
 | Version | File | SHA-256 |
 |---------|------|---------|
-| Dev (开发版) | CuSO4-dev.apk | `B3649A8DF06A681C86417247006096F32B5D4828928DE4A4F16A6E57BDD3ECE7` |
-| Open (开源版) | CuSO4-open.apk | `8CEEBD9BD2CC719EE6BDE2B5ABC27A73DAC27253DF365B47F4246D4715D51509` |
-| Lite (发行版) | CuSO4-lite.apk | `1297FDC6F4C3445BBFBC78B70BE2A5A24207256F4104EE11FC331DAA6F2DA78E` |
+| Dev | CuSO4-dev.apk | `B3649A8DF06A681C86417247006096F32B5D4828928DE4A4F16A6E57BDD3ECE7` |
+| Open | CuSO4-open.apk | `8CEEBD9BD2CC719EE6BDE2B5ABC27A73DAC27253DF365B47F4246D4715D51509` |
+| Lite | CuSO4-lite.apk | `1297FDC6F4C3445BBFBC78B70BE2A5A24207256F4104EE11FC331DAA6F2DA78E` |
 
 > **Note**: Hashes differ because package name, app label, and removed features (accounts, market) produce different binary output. This is expected.
 
@@ -32,35 +32,33 @@
 
 | File | Dev Lines | Open Lines | Status |
 |------|-----------|------------|--------|
-| `app.js` | 1,707 | 472 | ✅ Intentionally reduced (removed account/market UI) |
+| `app.js` | 1,707 | 472 | ✅ Reduced (removed account/market UI) |
 | `index.html` | — | — | ✅ Reduced (removed market/profile/backup pages) |
-| `styles.css` | — | — | ✅ Shared styling, minor layout adjustments |
+| `styles.css` | — | — | ✅ Shared styling |
 
 ### 3.2 Kotlin Backend Files
 
-All Kotlin files in the opensource version:
-
 | File | Purpose | Status |
 |------|---------|--------|
-| `RootManager.kt` | ROOT state detection, Zygisk/Ramdisk info | ✅ Same |
+| `RootManager.kt` | ROOT detection, Zygisk/Ramdisk info | ✅ Same |
 | `ModuleManager.kt` | Module management | ✅ Same |
 | `ModuleInstallManager.kt` | Module installation | ✅ Same |
-| `RootShell.kt` | Shell command execution | ✅ Same |
-| `CuSO4Bridge.kt` | JS bridge layer | ✅ Same |
+| `RootShell.kt` | Shell execution | ✅ Same |
+| `CuSO4Bridge.kt` | JS bridge | ✅ Same |
 | `MainActivity.kt` | Main activity | ✅ Same |
 
-> **No BackupManager.kt, AccountManager.kt, MarketManager.kt in Open version** — these are the only removed files.
+> **Removed from Open**: BackupManager.kt, AccountManager.kt, MarketManager.kt
 
-### 3.3 Feature Code Comparison
+### 3.3 Feature Code Search
 
 Searched for **backup, market, profile, account, purchase** in source files:
 
 | Version | References Found |
 |---------|-----------------|
-| Dev (app.js) | **403** occurrences |
-| Open (app.js) | **4** occurrences (generic JavaScript names only) |
+| Dev (app.js) | **403** |
+| Open (app.js) | **4** (generic variable names only) |
 
-**Result**: Open version contains **zero references** to backup, market, profile, account, or purchase functionality.
+**Result**: Open version contains **zero** references to backup, market, profile, account, or purchase functionality.
 
 ---
 
@@ -70,28 +68,24 @@ Searched for **backup, market, profile, account, purchase** in source files:
 - ❌ `page-market` — Module market page
 - ❌ `page-profile` — User profile page
 - ❌ `page-backup` — Backup/restore page
-- ❌ `market-screen` — Market overlay
-- ❌ `auth-overlay` — Login overlay
-- ❌ `purchase-overlay` — Purchase overlay
-- ❌ `backup-warn-overlay` — Backup warning overlay
+- ❌ `market-screen`, `auth-overlay`, `purchase-overlay`, `backup-warn-overlay`
 
-### 4.2 Removed Bottom Navigation Tabs (index.html)
+### 4.2 Removed Bottom Navigation Tabs
 - ❌ `模块市场` tab
 - ❌ `我的` tab (profile)
 - ✅ `概览` tab (retained)
 - ✅ `模块` tab (retained)
 
-### 4.3 Removed JavaScript Functions (app.js)
+### 4.3 Removed JavaScript Functions
 - ❌ `loadMarketModules()` / `searchMarket()`
-- ❌ `loadProfile()` / `updateProfile()` / `login()` / `logout()`
+- ❌ `loadProfile()` / `login()` / `logout()`
 - ❌ `loadBackupData()` / `createBackup()` / `restoreBackup()`
-- ❌ `showPurchasePage()` / `checkPurchase()`
 - ✅ All ROOT/module management functions retained
 
 ### 4.4 Removed Kotlin Files
-- ❌ `BackupManager.kt` — Full file removed
-- ❌ `AccountManager.kt` — Full file removed
-- ❌ `MarketManager.kt` — Full file removed
+- ❌ `BackupManager.kt`
+- ❌ `AccountManager.kt`
+- ❌ `MarketManager.kt`
 
 ---
 
@@ -112,7 +106,7 @@ Searched for **backup, market, profile, account, purchase** in source files:
 
 ## 6. How to Verify Yourself
 
-### 6.1 Build from Source and Compare
+### Build from Source
 
 ```bash
 # 1. Clone the repository
@@ -122,25 +116,20 @@ cd CuSO4-RootManager
 # 2. Build the APK
 ./gradlew assembleDebug
 
-# 3. Compare the SHA256 hash
-# Linux/macOS:
+# 3. Compare SHA256 hash
 sha256sum app/build/outputs/apk/debug/app-debug.apk
-# Should match:
-# 8CEEBD9BD2CC719EE6BDE2B5ABC27A73DAC27253DF365B47F4246D4715D51509
-
-# Windows (PowerShell):
-Get-FileHash app\build\outputs\apk\debug\app-debug.apk -Algorithm SHA256
+# Expected: 8CEEBD9BD2CC719EE6BDE2B5ABC27A73DAC27253DF365B47F4246D4715D51509
 ```
 
-### 6.2 Source Code Audit
+### Source Code Audit
 
 ```bash
-# Compare app.js between versions (should only show account/market/backup related code)
-grep -c "backup\|market\|profile\|account\|purchase" ../CuSO4\ v2/android/app/src/main/assets/home/app.js
+# Should only show account/market/backup related code
+grep -c "backup\|market\|profile\|account\|purchase" ../CuSO4\ v2/android/.../app.js
 # Expected: 403 (full version)
 
 grep -c "backup\|market\|profile\|account\|purchase" app/src/main/assets/home/app.js
-# Expected: 4 or less (only generic variable names)
+# Expected: 4 or less
 ```
 
 ---
@@ -149,10 +138,10 @@ grep -c "backup\|market\|profile\|account\|purchase" app/src/main/assets/home/ap
 
 **CuSO4 Open is a fully transparent, stripped-down version of CuSO4 Dev.**
 
-- **Removed**: Account system, Module market, Backup/restore feature
+- **Removed**: Account system, Module market, Backup/restore
 - **Kept**: Everything else (ROOT management, module control, superuser access)
-- **No hidden functionality**: Zero references to removed features in the opensource codebase
-- **Buildable from source**: Anyone can clone and build to verify identical output
+- **No hidden functionality**: Zero references to removed features
+- **Buildable from source**: Anyone can clone and build to verify
 
 ---
 
