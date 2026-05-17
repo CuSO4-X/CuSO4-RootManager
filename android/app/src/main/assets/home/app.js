@@ -346,9 +346,20 @@ function switchPage(pageId) {
   const pageEl = document.getElementById("page-" + pageId);
   if (pageEl) pageEl.hidden = false;
   tabs.forEach(t => t.classList.toggle("active", t.dataset.page === pageId));
+  updateTabIndicator();
   currentPageId = pageId;
   pushNavState({ pageId });
   handlePageActivated(pageId);
+}
+
+function updateTabIndicator() {
+  if (!tabIndicator) return;
+  const activeTab = document.querySelector(".tab.active");
+  if (!activeTab) return;
+  const nav = activeTab.closest(".bottom-nav");
+  if (!nav) return;
+  tabIndicator.style.width = `${activeTab.offsetWidth}px`;
+  tabIndicator.style.transform = `translateX(${activeTab.offsetLeft}px)`;
 }
 
 window.onModuleInstallProgress = (payload) => {
