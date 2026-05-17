@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CuSO4 Root 管理器</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <section class="content page" id="page-overview">
+      <div class="page-content-scroll">
+        <div class="title-row overview-header">
+          <div class="overview-title-wrap">
+            <img class="logo" src="./logo.png" alt="CuSO4 logo">
+            <h1 class="title">CuSO4 V1.0</h1>
+          </div>
+          <button class="icon-btn overview-settings-btn" id="btnOverviewSettings" type="button" aria-label="设置">
+            <span class="icon-dots" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+        </div>
+
+        <section class="hero-wrap">
+          <section class="card hero">
+            <h2>工作中</h2>
+            <p id="statusText">Magisk 33.1</p>
+          </section>
+          <section class="ops-column">
+            <section class="ops">
+              <button class="op-btn danger" id="btnUninstallMagisk" type="button">卸载 Magisk</button>
+            </section>
+          </section>
+        </section>
+
+        <div class="panel-system ksu-info-list" id="runLog">系统信息加载中...</div>
+      </div>
+    </section>
+
+    <section class="content page" id="page-modules" hidden>
+      <div class="modules-header">
+        <div class="title-row">
+          <h1 class="title">模块</h1>
+        </div>
+
+        <div class="modules-actions">
+          <button class="install-btn" type="button" id="btnInstallLocal">
+            <span>📦</span>
+            <span>从本地安装</span>
+          </button>
+        </div>
+
+        <input class="file-input-hidden" type="file" id="moduleFileInput" accept=".zip">
+      </div>
+      
+      <div class="modules-scroll">
+        <div id="modulesContent">
+          <div class="empty-state">暂无模块</div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="bottom-nav">
+      <div class="tab-indicator" id="tabIndicator" aria-hidden="true"></div>
+      <span class="tab active" data-page="overview">概览</span>
+      <span class="tab" data-page="modules">模块</span>
+    </nav>
+  </main>
+
+  <div class="flash-screen" id="flashScreen">
+    <div class="flash-header">
+      <button class="flash-back-btn" id="flashBackBtn" disabled>
+        ←
+      </button>
+      <div class="flash-title" id="flashTitle">正在刷入...</div>
+    </div>
+    <div class="flash-console" id="flashConsole"></div>
+    <div class="flash-footer">
+        <button class="flash-btn" id="flashBtn" disabled>重启</button>
+      </div>
+    </div>
+
+    <div class="confirm-overlay" id="confirmOverlay">
+      <div class="confirm-dialog">
+        <div class="confirm-content">
+          <div class="confirm-title" id="confirmTitle">确认删除</div>
+          <div class="confirm-message" id="confirmMessage">确定要删除这个模块吗？</div>
+        </div>
+        <div class="confirm-buttons">
+          <button class="confirm-btn confirm-btn-cancel" id="confirmCancel">取消</button>
+          <button class="confirm-btn confirm-btn-danger" id="confirmConfirm">删除</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice-overlay" id="noticeOverlay">
+      <div class="notice-dialog">
+        <div class="notice-title" id="noticeTitle">提示</div>
+        <div class="notice-message" id="noticeMessage">操作完成</div>
+        <div class="notice-actions">
+          <button class="confirm-btn confirm-btn-danger" id="noticeOkBtn" type="button">确定</button>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>
