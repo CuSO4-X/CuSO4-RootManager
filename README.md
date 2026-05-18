@@ -1,7 +1,10 @@
 # CuSO4 Open
 
 A lightweight, open-source Android ROOT manager built with native Android + WebView.
+
 **BUT IT CAN'T RUN WITH OUT OFFICAL MAGISK/KERNELSU ROOT MANAGER**
+
+~~This is a security feature. Also, we spent all the budget:D.~~
 ## Features
 
 - **Universal ROOT Manager Support** — Works with Magisk, KernelSU, and other major ROOT solutions
