@@ -1,12 +1,11 @@
 # CuSO4 Open
 
 A lightweight, open-source Android ROOT manager built with native Android + WebView.
-
+**BUT IT CAN'T RUN WITH OUT OFFICAL MAGISK/KERNELSU ROOT MANAGER**
 ## Features
 
 - **Universal ROOT Manager Support** — Works with Magisk, KernelSU, and other major ROOT solutions
 - **Module Management** — Install, enable/disable, and remove ROOT modules directly from your device
-- **Superuser Access Control** — View and manage which apps have ROOT access, with allow/deny/ask policies
 - **Magisk Detection** — Displays Zygisk status and Ramdisk information for Magisk installations
 - **One-Click Uninstall** — Remove ROOT or Magisk completely without rebooting multiple times
 
