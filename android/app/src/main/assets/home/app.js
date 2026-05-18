@@ -1,9 +1,7 @@
 const statusTextEl = document.getElementById("statusText");
 const runLogEl = document.getElementById("runLog");
 const btnUninstallMagisk = document.getElementById("btnUninstallMagisk");
-const btnOverviewSettings = document.getElementById("btnOverviewSettings");
 const btnInstallLocal = document.getElementById("btnInstallLocal");
-const moduleFileInput = document.getElementById("moduleFileInput");
 const modulesContent = document.getElementById("modulesContent");
 const suAppsContent = document.getElementById("suAppsContent");
 const btnRefreshSuApps = document.getElementById("btnRefreshSuApps");
@@ -331,15 +329,15 @@ function checkHasPerf(media) {
 }
 
 function getNavState(overrides) {
-  return { pageId: (overrides.pageId || currentPageId), marketOpen: false };
+  return { pageId: (overrides.pageId || currentPageId) };
 }
 
 function normalizeNavState(state) {
-  return { pageId: state?.pageId || "overview", marketOpen: false };
+  return { pageId: state?.pageId || "overview" };
 }
 
 function sameNavState(a, b) {
-  return a.pageId === b.pageId && a.marketOpen === b.marketOpen;
+  return a.pageId === b.pageId;
 }
 
 function pushNavState(overrides) {
@@ -411,22 +409,6 @@ window.onDeviceRegistered = (payload) => {
   debugLog("设备注册: " + (data.ok ? "成功" : data.message));
 };
 
-function openFilePicker() {
-  if (moduleFileInput) moduleFileInput.click();
-}
-
-if (moduleFileInput) {
-  moduleFileInput.addEventListener("change", (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    showFlashScreen("安装模块");
-    addFlashLog("- 文件: " + file.name);
-    addFlashLog("- 大小: " + (file.size / 1024).toFixed(1) + " KB");
-    invoke("pickModuleFile");
-    moduleFileInput.value = "";
-  });
-}
-
 flashBackBtn.addEventListener("click", () => hideFlashScreen());
 flashBtn.addEventListener("click", () => {
   if (flashBtn.textContent === "返回") hideFlashScreen();
@@ -459,12 +441,9 @@ if (btnUninstallMagisk) {
 }
 
 if (btnInstallLocal) {
-  btnInstallLocal.addEventListener("click", () => openFilePicker());
-}
-
-if (btnOverviewSettings) {
-  btnOverviewSettings.addEventListener("click", () => {
-    showNotice("请在模块页面 → 设置中配置服务器地址", "设置");
+  btnInstallLocal.addEventListener("click", () => {
+    showFlashScreen("选择模块");
+    invoke("pickModuleFile");
   });
 }
 

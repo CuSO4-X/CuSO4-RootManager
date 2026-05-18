@@ -26,11 +26,9 @@ label,
 [role="button"],
 .tab,
 .module-card,
-.market-module-card,
 .module-remove,
 .su-btn,
-.install-btn,
-.market-chip {
+.install-btn {
   -webkit-tap-highlight-color: transparent;
   outline: none;
 }
@@ -44,11 +42,9 @@ label:focus,
 [role="button"]:focus,
 .tab:focus,
 .module-card:focus,
-.market-module-card:focus,
 .module-remove:focus,
 .su-btn:focus,
-.install-btn:focus,
-.market-chip:focus {
+.install-btn:focus {
   outline: none;
   box-shadow: none;
 }
@@ -128,126 +124,6 @@ label:focus,
   pointer-events: none;
   visibility: hidden;
   transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), visibility 0ms linear var(--dur);
-}
-
-.market-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 9996;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 18px 16px 16px;
-  background: radial-gradient(130% 80% at 0% 0%, rgba(125, 211, 252, 0.42) 0%, transparent 48%),
-    radial-gradient(100% 80% at 100% 25%, rgba(196, 181, 253, 0.4) 0%, transparent 45%),
-    linear-gradient(165deg, #f8fbff 0%, #eef4ff 48%, #e9efff 100%);
-  opacity: 0;
-  transform: translateY(14px);
-  pointer-events: none;
-  visibility: hidden;
-  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), visibility 0ms linear var(--dur);
-}
-
-.market-screen.active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  visibility: visible;
-  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), visibility 0ms;
-}
-
-.market-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.market-back-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  border: 1px solid rgba(183, 208, 245, 0.58);
-  background: rgba(233, 246, 255, 0.72);
-  color: #1f3f87;
-  font-size: 20px;
-  font-weight: 700;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 10px 22px rgba(121, 143, 188, 0.16);
-}
-
-.market-title-wrap {
-  min-width: 0;
-}
-
-.market-title {
-  font-size: 28px;
-  line-height: 1.05;
-  color: #1f3f87;
-  font-weight: 800;
-}
-
-.market-subtitle {
-  margin-top: 4px;
-  font-size: 13px;
-  color: #5a6d90;
-}
-
-.market-toolbar {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.market-search {
-  width: 100%;
-  height: 44px;
-  border-radius: 14px;
-  border: 1px solid rgba(183, 208, 245, 0.58);
-  background: rgba(255, 255, 255, 0.62);
-  color: #1f3f87;
-  padding: 0 14px;
-  font-size: 14px;
-  outline: none;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.market-search::placeholder {
-  color: #7a8db0;
-}
-
-.market-chips {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 2px;
-}
-
-.market-chip {
-  height: 34px;
-  padding: 0 13px;
-  border-radius: 999px;
-  border: 1px solid rgba(183, 208, 245, 0.58);
-  background: rgba(255, 255, 255, 0.58);
-  color: #4a5b7c;
-  font-size: 13px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.market-chip.active {
-  color: #1f3f87;
-  background: linear-gradient(135deg, rgba(125, 211, 252, 0.45), rgba(129, 140, 248, 0.38));
-  border-color: rgba(129, 140, 248, 0.5);
-}
-
-.market-list {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 14px;
 }
 
 .flash-screen.active {
@@ -1446,80 +1322,6 @@ label:focus,
   margin-bottom: 0;
 }
 
-.market-module-card {
-  padding: 16px;
-  margin-bottom: 12px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(183, 208, 245, 0.56);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: flex;
-  gap: 14px;
-  position: relative;
-  animation: fadeInUp 0.5s var(--ease-out);
-  animation-fill-mode: both;
-  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out), background var(--dur) var(--ease-out),
-    border-color var(--dur) var(--ease-out);
-  cursor: pointer;
-}
-
-.market-module-meta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-
-.market-module-tag {
-  padding: 3px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(129, 140, 248, 0.38);
-  background: rgba(129, 140, 248, 0.15);
-  color: #465a87;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.market-module-stat {
-  font-size: 11px;
-  color: #6b7fa4;
-}
-
-.market-install-btn {
-  border: 1px solid rgba(99, 102, 241, 0.45);
-  background: linear-gradient(135deg, rgba(125, 211, 252, 0.58), rgba(129, 140, 248, 0.45));
-  color: #1f3f87;
-  border-radius: 10px;
-  height: 32px;
-  padding: 0 12px;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.market-empty {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #6b7fa4;
-  font-weight: 700;
-}
-
-.market-module-card:hover {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(129, 140, 248, 0.7);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(121, 143, 188, 0.3);
-}
-
-.market-module-card:active {
-  transform: translateY(0);
-  transition-duration: 0.1s;
-}
-
 .module-cards > div {
   transition: all 0.3s ease;
   cursor: pointer;
@@ -2016,10 +1818,6 @@ label:focus,
   margin-bottom: 20px;
 }
 
-.file-input-hidden {
-  display: none;
-}
-
 .empty-state {
   padding: 40px 0;
   text-align: center;
@@ -2044,8 +1842,7 @@ label:focus,
 }
 
 .lite-ui .app,
-.lite-ui .flash-screen,
-.lite-ui .market-screen {
+.lite-ui .flash-screen {
   background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
 }
 
@@ -2056,12 +1853,10 @@ label:focus,
 
 .lite-ui .page,
 .lite-ui .flash-screen,
-.lite-ui .market-screen,
 .lite-ui .confirm-overlay,
 .lite-ui .confirm-dialog,
 .lite-ui .tab-indicator,
 .lite-ui .module-card,
-.lite-ui .market-module-card,
 .lite-ui .anim-item {
   animation: none !important;
   transition-duration: 120ms !important;
@@ -2077,14 +1872,11 @@ label:focus,
 .lite-ui .tab-indicator,
 .lite-ui .module-card,
 .lite-ui .module-skeleton,
-.lite-ui .market-module-card,
 .lite-ui .loading-state,
 .lite-ui .confirm-dialog,
 .lite-ui .flash-console,
 .lite-ui .flash-btn,
 .lite-ui .flash-back-btn,
-.lite-ui .market-back-btn,
-.lite-ui .market-search,
 .lite-ui .install-btn,
 .lite-ui .su-card,
 .lite-ui .su-refresh-btn,

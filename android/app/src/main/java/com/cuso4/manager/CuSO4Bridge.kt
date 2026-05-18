@@ -1,7 +1,5 @@
 package com.cuso4.manager
 
-import android.content.SharedPreferences
-import android.provider.Settings
 import android.webkit.JavascriptInterface
 import org.json.JSONArray
 import org.json.JSONObject
@@ -12,13 +10,6 @@ class CuSO4Bridge(val activity: MainActivity) {
 
     internal val backendExecutor = Executors.newSingleThreadExecutor { runnable ->
         Thread(runnable, "CuSO4-Backend").apply { isDaemon = true }
-    }
-
-    internal val backupRunning = AtomicBoolean(false)
-    internal var backupIsRestore = false
-
-    internal val prefs: SharedPreferences by lazy {
-        activity.getSharedPreferences("cuso4_market", android.content.Context.MODE_PRIVATE)
     }
 
     internal val rootManager = RootManager(this)
@@ -44,26 +35,6 @@ class CuSO4Bridge(val activity: MainActivity) {
             val result: String = try {
                 val args = JSONArray(argsJson)
                 when (methodName) {
-                    "clearMarketAuth" -> okJson("认证已清除")
-                    "setServerUrl" -> {
-                        prefs.edit().putString("server_url", args.optString(0, "")).apply()
-                        okJson("服务器地址已保存")
-                    }
-                    "getMarketAuth" -> {
-                        val json = JSONObject()
-                        val deviceId = prefs.getString("device_id", null)
-                        val accesskey = prefs.getString("accesskey", null)
-                        if (deviceId != null && accesskey != null) {
-                            json.put("ok", true)
-                            json.put("deviceid", deviceId)
-                            json.put("accesskey", accesskey)
-                            json.put("serverUrl", getServerUrl())
-                        } else {
-                            json.put("ok", false)
-                            json.put("message", "未注册")
-                        }
-                        json.toString()
-                    }
                     "getRootState" -> rootManager.getRootState()
                     "uninstallMagisk" -> rootManager.uninstallMagisk()
                     "getSuperuserApps" -> rootManager.getSuperuserApps()
@@ -92,49 +63,6 @@ class CuSO4Bridge(val activity: MainActivity) {
     fun shutdown() { backendExecutor.shutdownNow() }
 
     fun installModuleFromZip(zipPath: String) { moduleManager.installModuleFromZip(zipPath) }
-
-    internal fun getServerUrl(): String = prefs.getString("server_url", "") ?: ""
-
-    internal fun getDeviceId(): String {
-        var id = prefs.getString("device_id", null)
-        if (!id.isNullOrBlank()) return id
-        id = Settings.Secure.getString(activity.contentResolver, Settings.Secure.ANDROID_ID)
-        if (id.isNullOrBlank()) id = "android-" + System.currentTimeMillis().toString(36)
-        prefs.edit().putString("device_id", id).apply()
-        return id
-    }
-
-    @JavascriptInterface
-    fun registerDevice() {
-        runOnBackend {
-            val json = JSONObject()
-            try {
-                val deviceId = getDeviceId()
-                val serverUrl = getServerUrl()
-                if (serverUrl.isBlank()) {
-                    json.put("ok", false); json.put("message", "请先设置服务器地址")
-                    activity.evaluateJs("if(window.onDeviceRegistered) window.onDeviceRegistered($json);")
-                    return@runOnBackend
-                }
-                val url = java.net.URL("$serverUrl/register/?deviceid=$deviceId")
-                val conn = url.openConnection() as java.net.HttpURLConnection
-                conn.connectTimeout = 10000; conn.readTimeout = 10000
-                val body = conn.inputStream.bufferedReader().readText()
-                conn.disconnect()
-                val resp = JSONObject(body)
-                if (resp.optBoolean("ok", false)) {
-                    prefs.edit().putString("device_id", deviceId).putString("accesskey", resp.getString("accesskey")).apply()
-                    json.put("ok", true); json.put("deviceid", deviceId)
-                    json.put("accesskey", resp.getString("accesskey")); json.put("serverUrl", serverUrl)
-                } else {
-                    json.put("ok", false); json.put("message", resp.optString("message", "注册失败"))
-                }
-            } catch (e: Exception) {
-                json.put("ok", false); json.put("message", "无法连接服务器: ${e.message}")
-            }
-            activity.evaluateJs("if(window.onDeviceRegistered) window.onDeviceRegistered($json);")
-        }
-    }
 
     @JavascriptInterface
     fun getInstalledModulesAsync(forceRefresh: String = "false") {
